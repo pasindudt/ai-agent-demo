@@ -10,6 +10,7 @@ dependencies = [
     "fastmcp",
     "httpx",
     "python-dotenv",
+    "rich",
 ]
 
 [dependency-groups]
