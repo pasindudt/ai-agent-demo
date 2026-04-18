@@ -1,4 +1,4 @@
-# Agentic Demo
+# AI-Agent Demo
 
 A chat agent with MCP tool calling and RAG knowledge base.
 
