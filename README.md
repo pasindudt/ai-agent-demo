@@ -25,12 +25,23 @@ echo "ANTHROPIC_API_KEY=your-key" > .env
 ## Run
 
 ```bash
-uv run agent.py
+uv run agent.py        # plain output — great for demos and reading the code
+uv run pretty.py       # rich UI — panels, spinners, styled prompts
 ```
 
 The agent automatically starts `mcp_server.py` as a subprocess via **stdio** — no separate terminal needed.
 
 Try: `What's the weather in Tokyo?` or `Tell me a joke`
+
+### How the pretty UI works
+
+`pretty.py` is a decorator-only layer — it never rewrites agent logic. It patches three things at runtime:
+
+| Decorator | What it intercepts |
+|---|---|
+| `intercept_print` | `print("Agent: …")` → rendered as a rich Markdown panel |
+| `intercept_input` | `input("You: ")` → styled `You ›` prompt |
+| `with_invoke_spinner` | `agent.ainvoke(…)` → animated thinking spinner |
 
 ## Switch to SSE mode (run server separately)
 
