@@ -16,10 +16,65 @@ Install dependencies and create the virtual environment:
 uv sync
 ```
 
-Set your Anthropic API key in a `.env` file:
+## Models & Providers
+
+Switch between cloud providers and local LLMs using `--provider` and `--model` flags.
 
 ```bash
-echo "ANTHROPIC_API_KEY=your-key" > .env
+uv run pretty.py --provider <provider> --model <model-name>
+```
+
+### Anthropic (default)
+
+Add your API key to `.env`:
+
+```
+ANTHROPIC_API_KEY=your-key
+```
+
+```bash
+uv run pretty.py                                              # default: claude-haiku-4-5-20251001
+uv run pretty.py --provider anthropic --model claude-sonnet-4-6
+uv run pretty.py --provider anthropic --model claude-opus-4-7
+```
+
+### OpenAI
+
+Add your API key to `.env`:
+
+```
+OPENAI_API_KEY=your-key
+```
+
+```bash
+uv run pretty.py --provider openai --model gpt-4o
+uv run pretty.py --provider openai --model gpt-4o-mini
+```
+
+> Also install the provider package: `uv add langchain-openai`
+
+### Local LLMs via Ollama
+
+No API key needed — runs fully offline.
+
+1. Install [Ollama](https://ollama.com) and pull a model:
+
+```bash
+ollama pull llama3.2
+ollama pull mistral
+```
+
+2. Start the server:
+
+```bash
+ollama serve
+```
+
+3. Run the agent:
+
+```bash
+uv run pretty.py --provider ollama                           # default: llama3.2
+uv run pretty.py --provider ollama --model mistral
 ```
 
 ## Run

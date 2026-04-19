@@ -1,3 +1,4 @@
+import argparse
 import asyncio
 import sys
 from dotenv import load_dotenv
@@ -9,8 +10,20 @@ from langgraph.checkpoint.memory import MemorySaver
 
 load_dotenv()
 
-MODEL = "claude-haiku-4-5-20251001"
-MODEL_PROVIDER = "anthropic"
+_PROVIDER_DEFAULTS = {
+    "anthropic": "claude-haiku-4-5-20251001",
+    "ollama": "llama3.2",
+}
+
+_parser = argparse.ArgumentParser(description="AI Agent")
+_parser.add_argument("--provider", choices=list(_PROVIDER_DEFAULTS), default="anthropic",
+                     help="LLM provider (default: anthropic)")
+_parser.add_argument("--model", default=None,
+                     help="Model name (defaults to provider's default model)")
+_args, _ = _parser.parse_known_args()
+
+MODEL_PROVIDER = _args.provider
+MODEL = _args.model or _PROVIDER_DEFAULTS[MODEL_PROVIDER]
 
 # Default: stdio — agent spawns mcp_server.py as a subprocess (no separate terminal needed).
 # SSE mode: agent connects to an already-running server over HTTP.
